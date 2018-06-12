@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = '电影检索和推荐系统';
+$this->title = '出版物检索和推荐系统';
 ?>
 <div class="site-index">
 
