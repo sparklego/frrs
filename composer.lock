@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11dc19ae1bd8fd0737fec254fc20f7de",
+    "content-hash": "fb6eb6cc0bd94894be87d69d82c7ae44",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -74,7 +74,7 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bestiejs/punycode.js.git",
+                "url": "git@github.com:bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
@@ -213,6 +213,62 @@
                 "html"
             ],
             "time": "2018-02-23T01:58:20+00:00"
+        },
+        {
+            "name": "semsol/arc2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/semsol/arc2.git",
+                "reference": "b385e70986d2c92d9ef60e7ed1d38850ab9d44ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/semsol/arc2/b385e70986d2c92d9ef60e7ed1d38850ab9d44ad.zip",
+                "reference": "b385e70986d2c92d9ef60e7ed1d38850ab9d44ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "doctrine/instantiator": "1.0.*",
+                "friendsofphp/php-cs-fixer": "2.*",
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "parsers/",
+                    "serializers/"
+                ],
+                "files": [
+                    "./ARC2.php",
+                    "./ARC2_Class.php",
+                    "./ARC2_getFormat.php",
+                    "./ARC2_getPreferredFormat.php",
+                    "./ARC2_Graph.php",
+                    "./ARC2_Reader.php",
+                    "./ARC2_Resource.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "W3C"
+            ],
+            "authors": [
+                {
+                    "name": "Benji Nowack",
+                    "homepage": "http://bnowack.de/"
+                }
+            ],
+            "description": "ARC2 RDF library for PHP",
+            "homepage": "https://github.com/semsol/arc2",
+            "keywords": [
+                "RDF",
+                "sparql"
+            ],
+            "time": "2018-06-13T08:53:54+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3230,7 +3286,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "semsol/arc2": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
