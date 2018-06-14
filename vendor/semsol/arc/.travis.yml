@@ -1,0 +1,42 @@
+language: php
+dist: trusty
+
+php:
+    - '5.6'
+    - '7.0'
+    - '7.1'
+    - '7.2'
+    - nightly
+
+matrix:
+    fast_finish: true
+    include:
+        - php: hhvm
+    allow_failures:
+        - php: nightly
+        - php: hhvm
+
+git:
+    depth: 1
+
+cache:
+    directories:
+        - $HOME/.composer
+        - $HOME/bin
+
+sudo: false
+
+before_install:
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb;'
+    # Install composer packages, will also trigger dump-autoload
+    - travis_retry composer install --no-interaction
+    # Install coveralls.phar
+    - wget -c -nc --retry-connrefused --tries=0 https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+    - chmod +x coveralls.phar
+    - php coveralls.phar --version
+
+script: vendor/bin/phpunit --coverage-clover gen/coverage/clover.xml
+
+after_success:
+    # Submit coverage report to Coveralls servers, see .coveralls.yml
+    - travis_retry php coveralls.phar -v
