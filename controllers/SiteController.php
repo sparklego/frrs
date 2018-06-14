@@ -125,4 +125,13 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * 搜索出版物
+     * 
+     */
+    public function actionSearch() {
+        $post = Yii::$app->request->post();
+        print_r($post);
+    }
 }

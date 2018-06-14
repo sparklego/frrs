@@ -2,16 +2,24 @@
 
 /* @var $this yii\web\View */
 
-$this->title = '出版物检索和推荐系统';
+$this->title = '基于知识图谱的出版物检索和推荐系统';
 ?>
 <style>
     .jumbotron {
         margin-bottom: 0;
     }
+    .jumbotron .zone {
+        width: 40%;
+        height: 4.6rem;
+        margin-right: 1rem;
+        font-size: 2rem;
+    }
     .foo {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 0 3rem;
+        padding: 0 4rem;
+        margin-right: 1rem;
+        width: 32%;
     }
     .foo h2 {
         margin-bottom: 2rem;
@@ -25,7 +33,11 @@ $this->title = '出版物检索和推荐系统';
         <p class="lead">基于知识图谱的出版物检索和推荐系统</p>
 
         <p>
-            <a class="btn btn-lg btn-success" href="http://www.yiiframework.com">开始检索</a>
+            <form class="form-inline" action="?r=site/search" method="post">
+                <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+                <input type="text" class="zone form-control" placeholder="请输入出版物" name="pub">
+                <button type="submit" class="btn btn-lg btn-success">开始检索</button>
+            </form>
         </p>
     </div>
 
@@ -35,7 +47,7 @@ $this->title = '出版物检索和推荐系统';
             <div class="foo col-lg-4">
                 <h2 class="text-center">出版物检索</h2>
 
-                <p>检索到相关出版物的基本信息，并展现出来，包括给出相关介绍网页的链接</p>
+                <p>检索相关出版物的基本信息，并给出相关介绍网页的链接</p>
             </div>
             <div class="foo col-lg-4">
                 <h2 class="text-center">语义推荐</h2>
@@ -45,7 +57,7 @@ $this->title = '出版物检索和推荐系统';
             <div class="foo col-lg-4">
                 <h2 class="text-center">数据可视化与分析</h2>
 
-                <p>出版物相关数据的可视化分析与展示，包括检索结果中部分数据的可视化展示以及对于出版物的统计分析</p>
+                <p>出版物相关数据的可视化分析与展示，包括统计分析</p>
             </div>
         </div>
 
