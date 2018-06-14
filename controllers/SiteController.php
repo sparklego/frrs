@@ -131,7 +131,7 @@ class SiteController extends Controller
      * 
      */
     public function actionSearch() {
-        $post = Yii::$app->request->post();
-        print_r($post);
+        $pub = Yii::$app->request->post('pub');
+        print_r($pub);
     }
 }

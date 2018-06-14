@@ -1,0 +1,13 @@
+
+http://dbpedia.org/page/Publication
+
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT distinct ?pub ?name WHERE {
+?pub rdf:type dbo:Game ;
+     rdfs:label ?name
+} limit 100
