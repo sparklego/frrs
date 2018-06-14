@@ -4,48 +4,48 @@
 
 $this->title = '出版物检索和推荐系统';
 ?>
+<style>
+    .jumbotron {
+        margin-bottom: 0;
+    }
+    .foo {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 0 3rem;
+    }
+    .foo h2 {
+        margin-bottom: 2rem;
+    }
+</style>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>Welcome!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">基于知识图谱的出版物检索和推荐系统</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p>
+            <a class="btn btn-lg btn-success" href="http://www.yiiframework.com">开始检索</a>
+        </p>
     </div>
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="foo col-lg-4">
+                <h2 class="text-center">出版物检索</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <p>检索到相关出版物的基本信息，并展现出来，包括给出相关介绍网页的链接</p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="foo col-lg-4">
+                <h2 class="text-center">语义推荐</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p>基于知识图谱给出的语义，推荐用户可能感兴趣的其他出版物</p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="foo col-lg-4">
+                <h2 class="text-center">数据可视化与分析</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p>出版物相关数据的可视化分析与展示，包括检索结果中部分数据的可视化展示以及对于出版物的统计分析</p>
             </div>
         </div>
 
