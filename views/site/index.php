@@ -10,7 +10,7 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
     }
     .jumbotron .zone {
         width: 40%;
-        height: 4.6rem;
+        height: 4.81rem;
         margin-right: 1rem;
         font-size: 2rem;
     }
@@ -35,7 +35,7 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
         <p>
             <form class="form-inline" action="?r=site/search" method="post">
                 <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
-                <input type="text" class="zone form-control" placeholder="请输入出版物" name="pub">
+                <input type="text" class="zone form-control" placeholder="请输入出版物名称" name="pub">
                 <button type="submit" class="btn btn-lg btn-success">开始检索</button>
             </form>
         </p>
@@ -47,7 +47,7 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
             <div class="foo col-lg-4">
                 <h2 class="text-center">出版物检索</h2>
 
-                <p>检索相关出版物的基本信息，并给出相关介绍网页的链接</p>
+                <p>数据来源于DBpedia、IMDb，检索相关出版物的基本信息，并给出相关介绍网页的链接</p>
             </div>
             <div class="foo col-lg-4">
                 <h2 class="text-center">语义推荐</h2>

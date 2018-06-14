@@ -1,5 +1,20 @@
 
 http://dbpedia.org/page/Publication
+http://dbpedia.org/page/Game
+http://dbpedia.org/page/File
+http://dbpedia.org/page/Book
+
+URL PREFIX: https://en.wikipedia.org/wiki/
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT distinct ?pub ?name WHERE {
+?pub rdf:type dbo:Game ;
+     rdfs:label ?name .
+FILTER( (REGEX(?name, '棋')) )
+} limit 100
 
 
 
@@ -8,6 +23,20 @@ PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT distinct ?pub ?name WHERE {
-?pub rdf:type dbo:Game ;
-     rdfs:label ?name
+?pub rdf:type dbo:Film ;
+     rdfs:label ?name .
+FILTER( (REGEX(?name, '棋')) )
+} limit 100
+
+
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT distinct ?pub ?name WHERE {
+?pub rdf:type dbo:Book ;
+     rdfs:label ?name .
+FILTER( (REGEX(?name, '棋')) )
 } limit 100
