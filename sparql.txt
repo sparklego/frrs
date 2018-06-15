@@ -41,4 +41,3 @@ SELECT distinct ?pub ?name WHERE {
 FILTER( (REGEX(?name, '棋')) )
 } limit 100
 
-echo 1
