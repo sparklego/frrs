@@ -132,6 +132,29 @@ class SiteController extends Controller
      */
     public function actionSearch() {
         $pub = Yii::$app->request->post('pub');
-        print_r($pub);
+        #print_r($pub);
+
+        $config = array(
+            /* remote endpoint */
+            'remote_store_endpoint' => 'http://dbpedia.org/sparql',
+        );
+
+        $arc = \ARC2::getRemoteStore($config);
+
+        $str = <<<EOF
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT distinct ?pub ?name WHERE {
+?pub rdf:type dbo:Game ;
+     rdfs:label ?name .
+FILTER( (REGEX(?name, '棋')) )
+} limit 10
+EOF;
+
+        $rows = $arc->query($str);
+
+        print_r($rows);
     }
 }
