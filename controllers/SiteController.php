@@ -18,6 +18,13 @@ class SiteController extends Controller
     // publication types
     public $pub_types = ['Film', 'Book', 'Game'];
 
+    // publication labels
+    public $labels = [
+        'Film' => '电影',
+        'Book' => '图书',
+        'Game' => '游戏',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -137,10 +144,20 @@ class SiteController extends Controller
      * 
      */
     public function actionSearch() {
-        $keyword = Yii::$app->request->post('keyword');
+        $keyword = trim(Yii::$app->request->post('keyword'));
         $pub_types = $this->pub_types;
         $arc = \ARC2::getRemoteStore($this->dbpedia);
         $data = [];
+        $url_prefix = 'https://en.wikipedia.org/wiki/';
+
+        // 判断语言
+        if(preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $keyword)>0) {  
+            $lang = 'zh'; 
+        } else if(preg_match('/[\x{4e00}-\x{9fa5}]/u', $keyword)>0) {  
+            $lang = 'zh';
+        } else {
+            $lang = 'en';
+        }
 
         foreach($pub_types as $type) {
             $query_str = <<<EOF
@@ -148,20 +165,36 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT distinct ?pub ?name WHERE {
+SELECT distinct ?pub ?name ?abstract WHERE {
 ?pub rdf:type dbo:$type ;
-     rdfs:label ?name .
-FILTER (REGEX(?name, '$keyword')) 
+     rdfs:label ?name ;
+     dbo:abstract ?abstract .
+FILTER ( REGEX(?name, "$keyword", "i") && (LANG(?name)="$lang") && (LANG(?abstract)="$lang") ) 
 } limit 10
 EOF;
             $res = $arc->query($query_str);
 
             if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
-                $data[$type] = $res['result']['rows'];
+                $rows = $res['result']['rows'];
+            } else {
+                $rows = [];
             }
-            sleep(0.5);
+
+            // replace url
+            foreach($rows as $k => $v) {
+                $arr = explode('/', $v['pub']);
+                $v['pub'] = $url_prefix . end($arr);
+                $rows[$k] = $v;
+            }
+
+            $data[$type] = $rows;
         }
-        sleep(1);
-        
+        // print_r($data);die;
+
+        return $this->render('result', [
+            'data' => $data,
+            'labels' => $this->labels,
+        ]);
     }
+
 }

@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = '基于知识图谱的出版物检索和推荐系统';
+$this->title = Yii::$app->params['name'];
 ?>
 <style>
     .jumbotron {
@@ -35,8 +35,8 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
         <p>
             <form class="form-inline" action="?r=site/search" method="post">
                 <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
-                <input type="text" class="zone form-control" placeholder="请输入出版物名称" name="keyword">
-                <button type="submit" class="btn btn-lg btn-success">开始检索</button>
+                <input id="keyword" type="text" class="zone form-control" placeholder="请输入关键字" name="keyword">
+                <button id="search" type="submit" class="btn btn-lg btn-success">开始检索</button>
             </form>
         </p>
     </div>
@@ -63,3 +63,21 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
 
     </div>
 </div>
+<?php
+
+
+$js = <<<JS
+    $(function(){
+        $('#search').click(function(){
+            var keyword = $('#keyword').val().trim();
+            if(keyword == '') {
+                alert('关键字不能为空！');
+                return false;
+            } else {
+                $('form').submit();
+            }
+        })
+    })
+JS;
+
+$this->registerJs($js);
