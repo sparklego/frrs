@@ -139,17 +139,12 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+
     /**
-     * 搜索出版物
+     * 搜索电影
      * 
      */
-    public function actionSearch() {
-        $keyword = trim(Yii::$app->request->post('keyword'));
-        $pub_types = $this->pub_types;
-        $arc = \ARC2::getRemoteStore($this->dbpedia);
-        $data = [];
-        $url_prefix = 'https://en.wikipedia.org/wiki/';
-
+    public function getStr($keyword, $type) {
         // 判断语言
         if(preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $keyword)>0) {  
             $lang = 'zh'; 
@@ -159,8 +154,7 @@ class SiteController extends Controller
             $lang = 'en';
         }
 
-        foreach($pub_types as $type) {
-            $query_str = <<<EOF
+        $query_str = <<<EOF
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -172,6 +166,22 @@ SELECT distinct ?pub ?name ?abstract WHERE {
 FILTER ( REGEX(?name, "$keyword", "i") && (LANG(?name)="$lang") && (LANG(?abstract)="$lang") ) 
 } limit 10
 EOF;
+        return $query_str;
+    }
+
+    /**
+     * 搜索出版物
+     * 
+     */
+    public function actionSearch() {
+        $keyword = trim(Yii::$app->request->post('keyword'));
+        $pub_types = $this->pub_types;
+        $arc = \ARC2::getRemoteStore($this->dbpedia);
+        $data = [];
+        $url_prefix = 'https://en.wikipedia.org/wiki/';
+
+        foreach($pub_types as $type) {
+            $query_str = $this->getStr($keyword, $type);
             $res = $arc->query($query_str);
 
             if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {

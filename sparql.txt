@@ -41,3 +41,17 @@ SELECT distinct ?pub ?name WHERE {
 FILTER( (REGEX(?name, '棋')) )
 } limit 100
 
+
+----------------------------------
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT distinct ?pub ?name ?abstract WHERE {
+?pub rdf:type dbo:Film ;
+     rdfs:label ?name ;
+     dbo:abstract ?abstract .
+FILTER ( REGEX(?name, "avenger", "i") && (LANG(?name)="en") && (LANG(?abstract)="en") ) 
+} limit 10
