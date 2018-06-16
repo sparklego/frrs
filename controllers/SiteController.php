@@ -170,7 +170,7 @@ SELECT distinct ?pub ?name ?abstract WHERE {
      rdfs:label ?name ;
      dbo:abstract ?abstract .
 FILTER ( REGEX(?name, "$keyword", "i") && (LANG(?name)="$lang") && (LANG(?abstract)="$lang") ) 
-} limit 10
+} limit 15
 EOF;
             $res = $arc->query($query_str);
 
