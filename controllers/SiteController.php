@@ -192,6 +192,7 @@ EOF;
         // print_r($data);die;
 
         return $this->render('result', [
+            'keyword' => $keyword,
             'data' => $data,
             'labels' => $this->labels,
         ]);

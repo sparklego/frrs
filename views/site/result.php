@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = '搜索结果' . Yii::$app->params['name'];
+$this->title = $keyword . '_搜索结果 - ' . Yii::$app->params['name'];
 $tabs = array_keys($data);
 $first = array_shift($tabs);
 ?>
