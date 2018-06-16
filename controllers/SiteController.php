@@ -11,7 +11,13 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
-{
+{   
+    // dbpedia sparql endpoint config
+    public $dbpedia = ['remote_store_endpoint' => 'http://dbpedia.org/sparql'];
+
+    // publication types
+    public $pub_types = ['Film', 'Book', 'Game'];
+
     /**
      * {@inheritdoc}
      */
@@ -131,30 +137,31 @@ class SiteController extends Controller
      * 
      */
     public function actionSearch() {
-        $pub = Yii::$app->request->post('pub');
-        #print_r($pub);
+        $keyword = Yii::$app->request->post('keyword');
+        $pub_types = $this->pub_types;
+        $arc = \ARC2::getRemoteStore($this->dbpedia);
+        $data = [];
 
-        $config = array(
-            /* remote endpoint */
-            'remote_store_endpoint' => 'http://dbpedia.org/sparql',
-        );
-
-        $arc = \ARC2::getRemoteStore($config);
-
-        $str = <<<EOF
+        foreach($pub_types as $type) {
+            $query_str = <<<EOF
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT distinct ?pub ?name WHERE {
-?pub rdf:type dbo:Game ;
+?pub rdf:type dbo:$type ;
      rdfs:label ?name .
-FILTER( (REGEX(?name, '棋')) )
+FILTER (REGEX(?name, '$keyword')) 
 } limit 10
 EOF;
+            $res = $arc->query($query_str);
 
-        $rows = $arc->query($str);
-
-        print_r($rows);
+            if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
+                $data[$type] = $res['result']['rows'];
+            }
+            sleep(0.5);
+        }
+        sleep(1);
+        
     }
 }

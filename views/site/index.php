@@ -35,7 +35,7 @@ $this->title = '基于知识图谱的出版物检索和推荐系统';
         <p>
             <form class="form-inline" action="?r=site/search" method="post">
                 <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
-                <input type="text" class="zone form-control" placeholder="请输入出版物名称" name="pub">
+                <input type="text" class="zone form-control" placeholder="请输入出版物名称" name="keyword">
                 <button type="submit" class="btn btn-lg btn-success">开始检索</button>
             </form>
         </p>
