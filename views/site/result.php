@@ -1,6 +1,11 @@
 <?php
 
 /* @var $this yii\web\View */
+// use app\assets\AppAsset;
+use app\assets\HighchartsAsset;
+
+// AppAsset::register($this);
+HighchartsAsset::register($this);
 
 $this->title = $keyword . '_搜索结果_' . Yii::$app->params['name'];
 $tabs = array_keys($data);
@@ -31,11 +36,13 @@ $first = array_shift($tabs);
 						<a href="#<?= $first ?>" data-toggle="tab"><?= $labels[$first] ?></a>
 					</li>
 					<?php foreach($tabs as $tab): ?>
-						<li><a href="#<?= $tab ?>" data-toggle="tab"><?= $labels[$tab] ?></a></li>
+					<li><a href="#<?= $tab ?>" data-toggle="tab"><?= $labels[$tab] ?></a></li>
 					<?php endforeach; ?>
+					<li><a href="#data-analysis" data-toggle="tab">数据可视化</a></li>
 				</ul>
 
 				<div id="myTabContent" class="tab-content">
+
 					<?php foreach($data as $key => $items): ?>
 					<?php if($key == $first) { ?>
 					<div class="tab-pane fade in active" id="<?= $key ?>">
@@ -48,27 +55,140 @@ $first = array_shift($tabs);
 						<table class="table table-hover">
 							<thead>
 								<tr>
+									<th width="5%">序号</th>
 									<th width="12%">名称</th>
 									<th>简介</th>
 								</tr>
 							</thead>
 							<tbody>
+								<?php $tmp = 1; ?>
 								<?php foreach($items as $item): ?>
 								<tr>
+									<td><?= $tmp ?></td>
 									<td>
 										<a target="_blank" href="<?= $item['pub'] ?>"><?= $item['name'] ?></a>
 									</td>
 									<td><?= mb_substr($item['abstract'], 0, 500) . ' ......' ?></td>
 								</tr>
+								<?php $tmp++; ?>
 								<?php endforeach; ?>
 							</tbody>
 						</table>
 						<?php } ?>
 					</div>
 					<?php endforeach; ?>
+
+					<div class="tab-pane fade in" id="data-analysis">
+						<?php if($is_plot) { ?>
+						<div class="col-md-6">
+							<div id="bar-container"></div>
+						</div>
+						<div class="col-md-6"><div id="pie-container"></div></div>
+						<?php } else { ?>
+						<p>没有相关数据</p>
+						<?php } ?>
+					</div>
+
 				</div>
 
 			</div>
 		</div>
 	</div>
 </div>
+
+<?php
+
+$js = <<<JS
+
+// Build the pie chart
+Highcharts.chart('bar-container', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: '出版物检索结果'
+    },
+    exporting:{
+        enabled:false
+    },
+    credits: {
+        enabled: false
+    },
+    xAxis: {
+        categories: ['电影', '图书', '游戏']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '检索结果'
+        }
+    },
+    legend: {
+        reversed: true,
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+    series: [{
+    	name: '数量',
+        data: [ $nums[Film], $nums[Book], $nums[Game] ]
+    }]
+});
+
+// Build the pie chart
+Highcharts.chart('pie-container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: '出版物类别占比'
+    },
+    exporting:{
+        enabled:false
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: '电影',
+            y: $nums[Film]
+        }, {
+            name: '图书',
+            y: $nums[Book]
+        }, {
+            name: '游戏',
+            y: $nums[Game]
+        }]
+    }]
+});
+JS;
+
+if($is_plot) {
+	$this->registerJs($js);
+}
+

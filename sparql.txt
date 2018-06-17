@@ -50,12 +50,15 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT distinct ?pub ?name ?abstract WHERE {
+SELECT distinct ?pub ?name ?abstract ?pid WHERE {
 ?pub rdf:type dbo:Film ;
      rdfs:label ?name ;
-     dbo:abstract ?abstract .
+     dbo:abstract ?abstract ;
+     dbo:wikiPageRevisionID ?pid .
 FILTER ( REGEX(?name, "avenger", "i") && (LANG(?name)="en") && (LANG(?abstract)="en") ) 
-} limit 10
+} 
+ORDER BY DESC(?pid)
+LIMIT 10
 
 
 ---------------------------------------------------
@@ -72,6 +75,8 @@ ORDER BY DESC(count(?movie))
 LIMIT 100
 
 
+--------------------------------------
+
 SELECT COUNT(?movie) SAMPLE(?movie)
 FROM <http://en.dbpedia.org>
 WHERE {
@@ -82,3 +87,16 @@ WHERE {
 GROUP BY ?movie
 ORDER BY DESC(count(?movie))
 LIMIT 100
+
+------------------------------
+
+SELECT ?pub ?name ?abstract ?pid 
+FROM <http://dbpedia.org/page/Avengers:_Age_of_Ultron>
+WHERE {
+     rdfs:label ?name .
+     dbo:abstract ?abstract .
+     dbo:wikiPageRevisionID ?pid 
+} 
+ORDER BY DESC(?pid)
+LIMIT 10
+

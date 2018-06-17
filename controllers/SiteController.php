@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
@@ -159,12 +160,15 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT distinct ?pub ?name ?abstract WHERE {
+SELECT distinct ?pub ?name ?abstract ?pid WHERE {
 ?pub rdf:type dbo:$type ;
      rdfs:label ?name ;
-     dbo:abstract ?abstract .
+     dbo:abstract ?abstract ;
+     dbo:wikiPageRevisionID ?pid .
 FILTER ( REGEX(?name, "$keyword", "i") && (LANG(?name)="$lang") && (LANG(?abstract)="$lang") ) 
-} limit 10
+}
+ORDER BY DESC(?pid)
+LIMIT 15
 EOF;
         return $query_str;
     }
@@ -177,8 +181,13 @@ EOF;
         $keyword = trim(Yii::$app->request->post('keyword'));
         $pub_types = $this->pub_types;
         $arc = \ARC2::getRemoteStore($this->dbpedia);
-        $data = [];
         $url_prefix = 'https://en.wikipedia.org/wiki/';
+        $data = [];
+        $nums = [];
+        $is_plot = 0;
+
+        if(empty($keyword))
+            $this->redirect(Url::toRoute('site/index'));
 
         foreach($pub_types as $type) {
             $query_str = $this->getStr($keyword, $type);
@@ -190,14 +199,19 @@ EOF;
                 $rows = [];
             }
 
-            // replace url
-            foreach($rows as $k => $v) {
+            if(!empty($rows))
+                $is_plot = 1;
+
+            // replace wiki url
+            /*foreach($rows as $k => $v) {
                 $arr = explode('/', $v['pub']);
                 $v['pub'] = $url_prefix . end($arr);
                 $rows[$k] = $v;
-            }
+            }*/
+            
 
             $data[$type] = $rows;
+            $nums[$type] = count($rows);
         }
         // print_r($data);die;
 
@@ -205,6 +219,8 @@ EOF;
             'keyword' => $keyword,
             'data' => $data,
             'labels' => $this->labels,
+            'is_plot' => $is_plot,
+            'nums' => $nums,
         ]);
     }
 
