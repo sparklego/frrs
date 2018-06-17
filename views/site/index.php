@@ -35,7 +35,7 @@ $this->title = Yii::$app->params['name'];
         <p>
             <form class="form-inline" action="?r=site/search" method="post">
                 <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
-                <input id="keyword" type="text" class="zone form-control" placeholder="请输入关键字" name="keyword">
+                <input id="keyword" type="text" class="zone form-control" placeholder="请输入关键词" name="keyword">
                 <button id="search" type="submit" class="btn btn-lg btn-success">开始检索</button>
             </form>
         </p>
