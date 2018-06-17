@@ -1,5 +1,6 @@
 
-http://dbpedia.org/page/Publication
+http://dbpedia.org/page/
+
 http://dbpedia.org/page/Game
 http://dbpedia.org/page/File
 http://dbpedia.org/page/Book
@@ -55,3 +56,29 @@ SELECT distinct ?pub ?name ?abstract WHERE {
      dbo:abstract ?abstract .
 FILTER ( REGEX(?name, "avenger", "i") && (LANG(?name)="en") && (LANG(?abstract)="en") ) 
 } limit 10
+
+
+---------------------------------------------------
+
+SELECT COUNT(?movie) SAMPLE(?movie)
+FROM <http://en.dbpedia.org>
+WHERE {
+	dbr:A_Trip_to_the_Moon dct:subject ?o .
+	?movie dct:subject ?o
+	FILTER (?movie != dbr:A_Trip_to_the_Moon) .
+} 
+GROUP BY ?movie
+ORDER BY DESC(count(?movie))
+LIMIT 100
+
+
+SELECT COUNT(?movie) SAMPLE(?movie)
+FROM <http://en.dbpedia.org>
+WHERE {
+	dbr:A_Trip_to_the_Moon rdf:type ?o .
+	?movie rdf:type ?o
+	FILTER (?movie != dbr:A_Trip_to_the_Moon) .
+} 
+GROUP BY ?movie
+ORDER BY DESC(count(?movie))
+LIMIT 100
