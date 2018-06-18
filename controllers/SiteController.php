@@ -203,11 +203,11 @@ EOF;
                 $is_plot = 1;
 
             // replace wiki url
-            /*foreach($rows as $k => $v) {
+            foreach($rows as $k => $v) {
                 $arr = explode('/', $v['pub']);
                 $v['pub'] = $url_prefix . end($arr);
                 $rows[$k] = $v;
-            }*/
+            }
             
 
             $data[$type] = $rows;

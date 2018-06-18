@@ -172,7 +172,7 @@ Highcharts.chart('pie-container', {
         }
     },
     series: [{
-        name: 'Brands',
+        name: '比例',
         colorByPoint: true,
         data: [{
             name: '电影',
