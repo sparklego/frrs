@@ -1,10 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-// use app\assets\AppAsset;
 use app\assets\HighchartsAsset;
-
-// AppAsset::register($this);
 HighchartsAsset::register($this);
 
 $this->title = $keyword . '_搜索结果_' . Yii::$app->params['name'];
@@ -12,9 +9,15 @@ $tabs = array_keys($data);
 $first = array_shift($tabs);
 ?>
 <style>
-	header h2 {
-		margin-bottom: 1.8rem;
+	header {
+		margin-bottom: 1.5rem;
 	}
+	#keyword {
+		width: 50%;
+        height: 3.8rem;
+        margin-right: 1rem;
+        font-size: 2rem;
+    }
 	.body-content {
 		border: 1px solid #ddd;
 		border-radius: 5px;
@@ -24,8 +27,14 @@ $first = array_shift($tabs);
 	}
 </style>
 <div class="site-result">
-	<header>
-		<h2>搜索结果</h2>
+	<header class="row">
+		<div class="col-md-12">
+			<form class="form-inline" action="?r=site/search" method="post">
+                <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+                <input id="keyword" type="text" class="form-control" placeholder="请输入关键词" value="<?= $keyword ?>" name="keyword">
+                <button id="search" type="submit" class="btn btn-lg btn-success">开始检索</button>
+            </form>
+		</div>
 	</header>
 	<div class="body-content">
 		<div class="row">
@@ -66,7 +75,7 @@ $first = array_shift($tabs);
 								<tr>
 									<td><?= $tmp ?></td>
 									<td>
-										<a target="_blank" href="<?= $item['pub'] ?>"><?= $item['name'] ?></a>
+										<a target="_blank" href="<?= "?r=site/info&type=$key&lang=$lang&pid=$item[pid]" ?>"><?= $item['name'] ?></a>
 									</td>
 									<td><?= mb_substr($item['abstract'], 0, 500) . ' ......' ?></td>
 								</tr>
@@ -186,6 +195,16 @@ Highcharts.chart('pie-container', {
         }]
     }]
 });
+
+$('#search').click(function(){
+    var keyword = $('#keyword').val().trim();
+    if(keyword == '') {
+        alert('关键字不能为空！');
+        return false;
+    } else {
+        $('form').submit();
+    }
+})
 JS;
 
 if($is_plot) {

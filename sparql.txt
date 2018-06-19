@@ -63,6 +63,8 @@ LIMIT 10
 
 ---------------------------------------------------
 
+
+共享类别
 SELECT COUNT(?movie) SAMPLE(?movie)
 FROM <http://en.dbpedia.org>
 WHERE {
@@ -74,9 +76,7 @@ GROUP BY ?movie
 ORDER BY DESC(count(?movie))
 LIMIT 100
 
-
---------------------------------------
-
+共享类型最多
 SELECT COUNT(?movie) SAMPLE(?movie)
 FROM <http://en.dbpedia.org>
 WHERE {
@@ -89,11 +89,5 @@ ORDER BY DESC(count(?movie))
 LIMIT 100
 
 ------------------------------
-http://dbpedia.org/resource/Avengers:_Age_of_Ultron
 
-SELECT ?name ?abstract
-WHERE {
-     <http://dbpedia.org/page/Avengers:_Age_of_Ultron> rdfs:label ?name ;
-     dbo:abstract ?abstract .
-} 
 

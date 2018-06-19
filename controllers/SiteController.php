@@ -26,6 +26,9 @@ class SiteController extends Controller
         'Game' => '游戏',
     ];
 
+    // url prefix
+    public $url_prefix = 'https://en.wikipedia.org/wiki/';
+
     /**
      * {@inheritdoc}
      */
@@ -109,10 +112,27 @@ class SiteController extends Controller
 
 
     /**
-     * 搜索电影
+     * sparql query
      * 
      */
-    public function getStr($keyword, $type) {
+    public function querySparql($query_str) {
+        $arc = \ARC2::getRemoteStore($this->dbpedia);
+        $res = $arc->query($query_str);
+
+        if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
+            $rows = $res['result']['rows'];
+        } else {
+            $rows = [];
+        }
+        return $rows;
+    }
+
+
+    /**
+     * 判断语言
+     * 
+     */
+    public function getLang($keyword) {
         // 判断语言
         if(preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $keyword)>0) {  
             $lang = 'zh'; 
@@ -121,9 +141,18 @@ class SiteController extends Controller
         } else {
             $lang = 'en';
         }
+        return $lang;
+    }
 
 
-        $query_str = <<<EOF
+    /**
+     * 搜索出版物
+     * 
+     */
+    public function getPubs($keyword, $type) {
+        $lang = $this->getLang($keyword);
+
+        $query_str = <<<SPARQL
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -136,9 +165,11 @@ SELECT distinct ?pub ?name ?abstract ?pid WHERE {
 FILTER ( REGEX(?name, "$keyword", "i") && (LANG(?name)="$lang") && (LANG(?abstract)="$lang") ) 
 }
 ORDER BY DESC(?pid)
-LIMIT 15
-EOF;
-        return $query_str;
+LIMIT 20
+SPARQL;
+        // echo $query_str;die;
+        $rows = $this->querySparql($query_str);
+        return $rows;
     }
 
     /**
@@ -148,8 +179,6 @@ EOF;
     public function actionSearch() {
         $keyword = trim(Yii::$app->request->post('keyword'));
         $pub_types = $this->pub_types;
-        $arc = \ARC2::getRemoteStore($this->dbpedia);
-        $url_prefix = 'https://en.wikipedia.org/wiki/';
         $data = [];
         $nums = [];
         $is_plot = 0;
@@ -158,25 +187,10 @@ EOF;
             $this->redirect(Url::toRoute('site/index'));
 
         foreach($pub_types as $type) {
-            $query_str = $this->getStr($keyword, $type);
-            $res = $arc->query($query_str);
-
-            if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
-                $rows = $res['result']['rows'];
-            } else {
-                $rows = [];
-            }
+            $rows = $this->getPubs($keyword, $type);
 
             if(!empty($rows))
                 $is_plot = 1;
-
-            // replace wiki url
-            foreach($rows as $k => $v) {
-                $arr = explode('/', $v['pub']);
-                $v['pub'] = $url_prefix . end($arr);
-                $rows[$k] = $v;
-            }
-            
 
             $data[$type] = $rows;
             $nums[$type] = count($rows);
@@ -189,7 +203,74 @@ EOF;
             'labels' => $this->labels,
             'is_plot' => $is_plot,
             'nums' => $nums,
+            'lang' => $this->getLang($keyword),
         ]);
     }
 
+    /**
+     * 查询出版物详细信息
+     * 
+     */
+    public function queryInfo($pid, $type='Film', $lang='en') {
+        $arc = \ARC2::getRemoteStore($this->dbpedia);
+        $query_str = <<<SPARQL
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT *
+WHERE {
+?uri rdf:type dbo:$type ;
+     dbo:wikiPageRevisionID ?pid ;
+     rdfs:label ?name ;
+     dbo:abstract ?abstract .
+     FILTER ( (?pid=$pid)&&(lang(?name)='$lang')&&(lang(?abstract)='$lang') )
+}
+LIMIT 1
+SPARQL;
+        
+
+        $rows = $this->querySparql($query_str);
+        if(!empty($rows))
+            $rows = $rows[0];
+        // print_r($query_str);die;
+        return $rows;
+    }
+
+
+
+    /**
+     * 出版物详细页面
+     * 
+     */
+    public function actionInfo() {
+        $pid = intval(Yii::$app->request->get('pid', 1));
+        $type = Yii::$app->request->get('type', 'Film');
+        $lang = Yii::$app->request->get('lang', 'en');
+
+        if(!in_array($type, $this->pub_types))
+            $this->redirect(Url::toRoute('site/index'));
+
+        if(!in_array($lang, ['zh', 'en'])) 
+            $lang = 'en';
+
+        $info = $this->queryInfo($pid, $type, $lang);
+
+        if(isset($info['uri']))
+            $info['uri'] = $this->url_prefix . basename($info['uri']);
+
+        if(!empty($info) && isset($info['name']))
+            $pubname = $info['name'];
+        else
+            $pubname = '没有相关信息';
+            
+        $title = '相似' . $this->labels[$type];
+
+        return $this->render('info', [
+            'pubname' => $pubname,
+            'type' => $type,
+            'info' => $info,
+            'title' => $title,
+        ]);
+    }
 }
