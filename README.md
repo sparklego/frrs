@@ -24,5 +24,5 @@
 ***
 
 ### 出版物详情页
-![alt text](imgs/index.png)
+![alt text](imgs/info.png)
 ***
