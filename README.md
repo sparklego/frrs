@@ -3,7 +3,7 @@
 
 ### 说明
  + 相关文档在**docs**文件夹下
- + 系统链接地址<a href="https://www.sparklego.cn/" target="_blank">sparklego</a>
+ + 系统已部署，链接地址[sparklego](https://www.sparklego.cn/)
 
 ### 安装环境
  + Apache2.4 或 Nginx 1.12
