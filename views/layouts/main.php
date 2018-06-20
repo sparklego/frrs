@@ -41,18 +41,13 @@ AppAsset::register($this);
             ['label' => '首页', 'url' => ['/site/index']],
             ['label' => '关于', 'url' => ['/site/about']],
             ['label' => '联系', 'url' => ['/site/contact']],
-            /*Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )*/
+            [
+                'label' => 'Github', 
+                'url' => 'https://github.com/sparklego/frrs',
+                'linkOptions' => [
+                    'target' => '_blank',
+                ]
+            ],
         ],
     ]);
     NavBar::end();

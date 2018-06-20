@@ -19,9 +19,8 @@ $this->title = $pubname;
 		font-size: 1.6rem;
 		line-height: 2.4rem;
 	}
-
 	#rec {
-		margin: 2rem 0 2rem;
+		margin: 2.5rem 0 2.5rem;
 	}
 </style>
 <div class="site-info">

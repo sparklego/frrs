@@ -46,17 +46,16 @@ $this->title = Yii::$app->params['name'];
         <div class="row">
             <div class="foo col-lg-4">
                 <h2 class="text-center">出版物检索</h2>
-
-                <p>数据来源于DBpedia、IMDb，检索相关出版物的基本信息，并给出相关介绍网页的链接</p>
+                <p>
+                    数据源为DBpedia链接开放数据，检索出版物的基本信息，并给出相关wiki链接
+                </p>
             </div>
             <div class="foo col-lg-4">
                 <h2 class="text-center">语义推荐</h2>
-
                 <p>基于知识图谱给出的语义，推荐用户可能感兴趣的其他出版物</p>
             </div>
             <div class="foo col-lg-4">
                 <h2 class="text-center">数据可视化与分析</h2>
-
                 <p>出版物相关数据的可视化分析与展示，包括统计分析</p>
             </div>
         </div>
