@@ -117,14 +117,14 @@ class SiteController extends Controller
      */
     public function querySparql($query_str) {
         $arc = \ARC2::getRemoteStore($this->dbpedia);
-        $res = $arc->query($query_str);
+        $res = $arc->query($query_str, 'rows');
 
-        if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
-            $rows = $res['result']['rows'];
-        } else {
-            $rows = [];
-        }
-        return $rows;
+        // if( ($res) && (isset($res['result'])) && (isset($res['result']['rows'])) ) {
+        //     $rows = $res['result']['rows'];
+        // } else {
+        //     $rows = [];
+        // }
+        return $res;
     }
 
 
@@ -259,11 +259,17 @@ SPARQL;
         if(isset($info['uri']))
             $info['uri'] = $this->url_prefix . basename($info['uri']);
 
-        if(!empty($info) && isset($info['name']))
+        if(!empty($info) && isset($info['name'])) {
             $pubname = $info['name'];
-        else
+            // 推荐
+            $name = basename($info['uri']);
+            // echo $name;die;
+            $data = $this->recommend($name);
+            print_r($data);die;
+        } else {
             $pubname = '没有相关信息';
-            
+        }
+        
         $title = '相似' . $this->labels[$type];
 
         return $this->render('info', [
@@ -272,5 +278,25 @@ SPARQL;
             'info' => $info,
             'title' => $title,
         ]);
+    }
+
+
+
+    /**
+     * 相似出版物推荐
+     * 
+     */
+    public function recommend($name) {
+
+        $cmd = "python D:/xampps/htdocs/frrs/python/sparql.py $name";
+        $json = '';
+
+        $handle = popen($cmd, 'r');
+        while($rows = fread($handle, 1024))
+            $json .= $rows;
+        pclose($handle);
+
+        $data = json_decode($json, true);
+        return $data;
     }
 }

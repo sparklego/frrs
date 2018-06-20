@@ -69,14 +69,30 @@ SELECT COUNT(?movie) SAMPLE(?movie)
 FROM <http://en.dbpedia.org>
 WHERE {
 	dbr:A_Trip_to_the_Moon dct:subject ?o .
-	?movie dct:subject ?o
+	?movie dct:subject ?o .
 	FILTER (?movie != dbr:A_Trip_to_the_Moon) .
 } 
 GROUP BY ?movie
 ORDER BY DESC(count(?movie))
-LIMIT 100
+LIMIT 10
 
-共享类型最多
+
+SELECT COUNT(?movie) SAMPLE(?movie)
+FROM <http://en.dbpedia.org>
+WHERE {
+	?res rdf:type dbo:Film ;
+	     dct:subject ?o .
+	?movie dct:subject ?o ;
+	       dbo:wikiPageRevisionID ?pid .
+	FILTER ( REGEX(?res, "The_Avengers_(2012_film)") && (?movie != ?res) ) .
+} 
+GROUP BY ?movie
+ORDER BY DESC(count(?movie))
+LIMIT 10
+
+
+
+共享类型
 SELECT COUNT(?movie) SAMPLE(?movie)
 FROM <http://en.dbpedia.org>
 WHERE {
@@ -86,8 +102,37 @@ WHERE {
 } 
 GROUP BY ?movie
 ORDER BY DESC(count(?movie))
-LIMIT 100
+LIMIT 10
 
 ------------------------------
+SELECT COUNT(?movie) SAMPLE(?movie)
+FROM <http://en.dbpedia.org>
+WHERE {
+	?res rdf:type dbo:Film ;
+	     dct:subject ?o .
+	?movie dct:subject ?o .
+	FILTER ( REGEX(?res, "The_Avengers_") && (?movie != ?res) ) .
+} 
+GROUP BY ?movie
+ORDER BY DESC(count(?movie))
+LIMIT 10
 
 
+
+
+SELECT COUNT(?movie) SAMPLE(?movie)
+FROM <http://en.dbpedia.org>
+WHERE {
+	?res rdf:type dbo:Film ;
+	     dct:subject ?o .
+	?movie dct:subject ?o .
+	FILTER ( REGEX(?res, "The_Avengers_") && (?movie != ?res) ) .
+} 
+GROUP BY ?movie
+ORDER BY DESC(count(?movie))
+LIMIT 10
+
+
+
+
+---------------------------------
