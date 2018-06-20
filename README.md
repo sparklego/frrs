@@ -1,8 +1,9 @@
 # frrs
-基于知识图谱的[出版物检索和推荐系统](https://www.sparklego.cn/)
+基于知识图谱的出版物检索和推荐系统
 
 ### 说明
  + 相关文档在**docs**文件夹下
+ + 系统链接地址<a href="https://www.sparklego.cn/" target="_blank">sparklego</a>
 
 ### 安装环境
  + Apache2.4 或 Nginx 1.12
