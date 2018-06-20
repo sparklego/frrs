@@ -44,7 +44,7 @@ $this->title = $pubname;
 		<div class="col-md-4">
 			<h3 id="rec"><?= $title ?></h3>
 			<?php foreach($recommends as $item): ?>
-			<a href="<?= $item[url] ?>" target="_blank" class="list-group-item">
+			<a href="<?= $item['url'] ?>" target="_blank" class="list-group-item">
 				<?= $item['name'] ?>
 			</a>
 			<?php endforeach; ?>
