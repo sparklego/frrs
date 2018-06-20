@@ -4,6 +4,7 @@
 ### 说明
  + 相关文档在**docs**文件夹下
  + 系统已部署，链接地址[https://www.sparklego.cn](https://www.sparklego.cn/)
+ + 项目基于PHP+Python语言，使用了YII2框架，数据源为dbpedia的链接开放数据
 
 ### 安装环境
  + Apache2.4 或 Nginx 1.12
