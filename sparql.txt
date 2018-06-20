@@ -126,7 +126,7 @@ WHERE {
 	?res rdf:type dbo:Film ;
 	     dct:subject ?o .
 	?movie dct:subject ?o .
-	FILTER ( REGEX(?res, "The_Avengers_") && (?movie != ?res) ) .
+	FILTER ( REGEX(?res, "Avengers:_Age_of_Ultron") && (?movie != ?res) ) .
 } 
 GROUP BY ?movie
 ORDER BY DESC(count(?movie))

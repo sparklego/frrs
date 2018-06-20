@@ -264,7 +264,7 @@ SPARQL;
             // 推荐
             $name = basename($info['uri']);
             // echo $name;die;
-            $data = $this->recommend($name);
+            $data = $this->recommend($name, $type);
             print_r($data);die;
         } else {
             $pubname = '没有相关信息';
@@ -286,17 +286,25 @@ SPARQL;
      * 相似出版物推荐
      * 
      */
-    public function recommend($name) {
+    public function recommend($name, $pubtype) {
+        //替换括号
+        $patt = '/\(.*\)/';
+        $name = preg_replace($patt, '', $name);
 
-        $cmd = "python D:/xampps/htdocs/frrs/python/sparql.py $name";
+        echo Yii::$app->basePath;
+
+        $cmd = "python D:/xampps/htdocs/frrs/python/sparql.py $name $pubtype";
         $json = '';
 
+        die;
         $handle = popen($cmd, 'r');
         while($rows = fread($handle, 1024))
             $json .= $rows;
         pclose($handle);
 
         $data = json_decode($json, true);
+        print_r($data);die;
+
         return $data;
     }
 }

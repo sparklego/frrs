@@ -6,19 +6,21 @@ from SPARQLWrapper import SPARQLWrapper, JSON, XML, N3, RDF
 
 
 pubname = sys.argv[1]
+pubtype = sys.argv[2]
 
 
 query_str = '''
 SELECT COUNT(?movie) SAMPLE(?movie)
 WHERE {
-	dbr:%s dct:subject ?o .
+	?res rdf:type dbo:%s ;
+	     dct:subject ?o .
 	?movie dct:subject ?o .
-	FILTER (?movie != dbr:%s) .
+	FILTER ( REGEX(?res, "%s") && (?movie != ?res) ) .
 } 
 GROUP BY ?movie
 ORDER BY DESC(count(?movie))
 LIMIT 10
-''' % (pubname, pubname)
+''' % (pubtype, pubname)
 
 
 # print(query_str);exit();
@@ -29,4 +31,5 @@ sparql.setQuery(query_str)
 sparql.setReturnFormat(JSON)
 results = sparql.query().convert()
 
+# print(results)
 print(json.dumps(results))
