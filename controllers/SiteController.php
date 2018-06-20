@@ -264,8 +264,7 @@ SPARQL;
             // 推荐
             $name = basename($info['uri']);
             // echo $name;die;
-            $data = $this->recommend($name, $type);
-            print_r($data);die;
+            $recommends = $this->recommend($name, $type);
         } else {
             $pubname = '没有相关信息';
         }
@@ -277,6 +276,7 @@ SPARQL;
             'type' => $type,
             'info' => $info,
             'title' => $title,
+            'recommends' => $recommends,
         ]);
     }
 
@@ -290,21 +290,29 @@ SPARQL;
         //替换括号
         $patt = '/\(.*\)/';
         $name = preg_replace($patt, '', $name);
+        $path = str_replace('\\', '/', Yii::$app->basePath) . '/python/sparql.py';
 
-        echo Yii::$app->basePath;
-
-        $cmd = "python D:/xampps/htdocs/frrs/python/sparql.py $name $pubtype";
+        $cmd = "python $path $name $pubtype";
         $json = '';
 
-        die;
         $handle = popen($cmd, 'r');
         while($rows = fread($handle, 1024))
             $json .= $rows;
         pclose($handle);
 
         $data = json_decode($json, true);
-        print_r($data);die;
+        $recommends = [];
 
-        return $data;
+        if($data && isset($data['results']) && isset($data['results']['bindings'])) {
+            foreach($data['results']['bindings'] as $v) {
+                $tmp_name = basename($v['callret-1']['value']);
+                $item['name'] = str_replace('_', ' ', $tmp_name);
+                $item['url'] = $this->url_prefix . $tmp_name;
+                $recommends[] = $item;
+            }
+        }
+
+        // print_r($recommends);die;
+        return $recommends;
     }
 }

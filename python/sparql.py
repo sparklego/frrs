@@ -10,16 +10,16 @@ pubtype = sys.argv[2]
 
 
 query_str = '''
-SELECT COUNT(?movie) SAMPLE(?movie)
+SELECT COUNT(?pub) SAMPLE(?pub)
 WHERE {
 	?res rdf:type dbo:%s ;
 	     dct:subject ?o .
-	?movie dct:subject ?o .
-	FILTER ( REGEX(?res, "%s") && (?movie != ?res) ) .
+	?pub dct:subject ?o .
+	FILTER ( REGEX(?res, "%s") && (?pub != ?res) ) .
 } 
-GROUP BY ?movie
-ORDER BY DESC(count(?movie))
-LIMIT 10
+GROUP BY ?pub
+ORDER BY DESC(count(?pub))
+LIMIT 15
 ''' % (pubtype, pubname)
 
 
