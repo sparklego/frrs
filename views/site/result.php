@@ -13,7 +13,6 @@ $first = array_shift($tabs);
 		margin-bottom: 1.5rem;
 	}
 	#keyword {
-		width: 50%;
         height: 3.8rem;
         margin-right: 1rem;
         font-size: 2rem;
@@ -28,13 +27,17 @@ $first = array_shift($tabs);
 </style>
 <div class="site-result">
 	<header class="row">
-		<div class="col-md-12">
-			<form class="form-inline" action="?r=site/search" method="post">
-                <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+		<form class="form" action="?r=site/search" method="post">
+            <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+            <div class="col-md-6 col-sm-8 col-xs-8">
                 <input id="keyword" type="text" class="form-control" placeholder="请输入关键词" value="<?= $keyword ?>" name="keyword">
-                <button id="search" type="submit" class="btn btn-lg btn-success">开始检索</button>
-            </form>
-		</div>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-2" style="padding: 0;">
+                <button id="search" type="submit" class="btn btn-lg btn-success">
+                    开始检索
+                </button>
+            </div>
+        </form>
 	</header>
 	<div class="body-content">
 		<div class="row">
@@ -64,7 +67,7 @@ $first = array_shift($tabs);
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th width="5%">序号</th>
+									<th width="8%">序号</th>
 									<th width="12%">名称</th>
 									<th>简介</th>
 								</tr>
@@ -89,10 +92,12 @@ $first = array_shift($tabs);
 
 					<div class="tab-pane fade in" id="data-analysis">
 						<?php if($is_plot) { ?>
-						<div class="col-md-6">
+						<div class="col-md-6 col-sm-12 col-xs-12">
 							<div id="bar-container"></div>
 						</div>
-						<div class="col-md-6"><div id="pie-container"></div></div>
+						<div class="col-md-6 col-sm-12 col-xs-12">
+                            <div id="pie-container"></div>
+                        </div>
 						<?php } else { ?>
 						<p>没有相关数据</p>
 						<?php } ?>

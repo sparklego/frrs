@@ -29,7 +29,7 @@ $this->title = $pubname;
 	<?php } else { ?>
 	<div class="body-content row">
 
-		<div class="col-md-8">
+		<div class="col-md-8 col-sm-8 col-xs-12">
 			<h2 id="tit" class="text-center">
 				<a id="link" target="_blank" href="<?= $info['uri'] ?>"><?= $pubname ?></a>
 			</h2>
@@ -40,7 +40,7 @@ $this->title = $pubname;
 		</div>
 		
 		<?php if(!empty($recommends)) { ?>
-		<div class="col-md-4">
+		<div class="col-md-4 col-sm-4 col-xs-12">
 			<h3 id="rec"><?= $title ?></h3>
 			<?php foreach($recommends as $item): ?>
 			<a href="<?= $item['url'] ?>" target="_blank" class="list-group-item">
