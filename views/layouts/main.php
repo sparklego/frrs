@@ -64,8 +64,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; BUAA Software Engineering <?= date('Y') ?></p>
-
+        <p class="pull-left">&copy; BUAA AI <?= date('Y') ?></p>
         <p class="pull-right">Powered by SparkleGo</p>
     </div>
 </footer>

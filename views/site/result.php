@@ -27,8 +27,8 @@ $first = array_shift($tabs);
 </style>
 <div class="site-result">
 	<header class="row">
-		<form class="form" action="?r=site/search" method="post">
-            <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+		<form class="form" method="get">
+            <input type="hidden" name="r" value="site/search" />
             <div class="col-md-6 col-sm-8 col-xs-8">
                 <input id="keyword" type="text" class="form-control" placeholder="请输入关键词" value="<?= $keyword ?>" name="keyword">
             </div>
@@ -113,7 +113,19 @@ $first = array_shift($tabs);
 <?php
 
 $js = <<<JS
+$('#search').click(function(){
+    var keyword = $('#keyword').val().trim();
+    
+    if(keyword == '') {
+        alert('关键字不能为空！');
+        return false;
+    } 
+    return true;
+})
+JS;
+$this->registerJs($js);
 
+$plotjs = <<<JS
 // Build the pie chart
 Highcharts.chart('bar-container', {
     chart: {
@@ -201,18 +213,9 @@ Highcharts.chart('pie-container', {
     }]
 });
 
-$('#search').click(function(){
-    var keyword = $('#keyword').val().trim();
-    if(keyword == '') {
-        alert('关键字不能为空！');
-        return false;
-    } else {
-        $('form').submit();
-    }
-})
 JS;
 
 if($is_plot) {
-	$this->registerJs($js);
+	$this->registerJs($plotjs);
 }
 

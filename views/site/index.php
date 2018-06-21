@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use yii\helpers\Url;
 $this->title = Yii::$app->params['name'];
 ?>
 <style>
@@ -31,8 +31,9 @@ $this->title = Yii::$app->params['name'];
 
         <p class="lead">基于知识图谱的出版物检索和推荐系统</p>
 
-        <form class="form row" action="?r=site/search" method="post">
-            <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" />
+        <form class="form row" method="get">
+            <!-- <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>" /> -->
+            <input type="hidden" name="r" value="site/search">
             <div class="col-md-2 col-sm-1 col-xs-0"></div>
             <div class="col-md-6 col-sm-8 col-xs-8">
                 <input id="keyword" type="text" class="form-control col-md-8" placeholder="请输入关键词" name="keyword">
@@ -72,17 +73,18 @@ $this->title = Yii::$app->params['name'];
 </div>
 <?php
 
+$url = Url::toRoute('site/search');
 
 $js = <<<JS
     $(function(){
         $('#search').click(function(){
             var keyword = $('#keyword').val().trim();
+            
             if(keyword == '') {
                 alert('关键字不能为空！');
                 return false;
-            } else {
-                $('form').submit();
-            }
+            } 
+            return true;
         })
     })
 JS;

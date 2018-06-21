@@ -177,7 +177,7 @@ SPARQL;
      * 
      */
     public function actionSearch() {
-        $keyword = trim(Yii::$app->request->post('keyword'));
+        $keyword = trim(Yii::$app->request->get('keyword', ''));
         $pub_types = $this->pub_types;
         $data = [];
         $nums = [];
