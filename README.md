@@ -3,8 +3,9 @@
 
 ### 说明
  + 相关文档在**docs**文件夹下
- + 系统已部署，链接地址[https://www.sparklego.cn](https://www.sparklego.cn/)
  + 项目来源于[知识工程基础-期末](https://www.cnblogs.com/jiel/p/9125256.html)
+ + 系统已部署，链接地址[https://www.sparklego.cn](https://www.sparklego.cn/)
+ + [安卓](Android/SparkleGo.apk)apk在Android目录下
  + 项目基于PHP+Python语言，使用了YII2框架，数据源为dbpedia的链接开放数据
 
 ### 安装环境
